@@ -20,11 +20,23 @@ exports.create = async(req, res, next) => {
 
 exports.findAll = async(req, res, next) => {
     try {
-        const products = await Product.find();
-        return res.status(200).json({
-            status: 'success',
-            count: products.length,
-            data: products
+        const customLabels = {
+            docs: "products"
+        };
+        const options = {
+            page: req.query.page,
+            limit: req.query.perPage,
+            sort: { createdAt: -1 },
+            customLabels,
+            collation: {
+              locale: "en"
+            }
+        };
+        Product.paginate({}, options, (err, products)=>{
+            res.status(200).json({
+                status: 'success',
+                data: {...products}
+            })
         })
     } catch (error) {
         return next(error);
@@ -33,10 +45,23 @@ exports.findAll = async(req, res, next) => {
 
 exports.findAvailable = async(req, res, next) => {
     try {
-        const products = await Product.find({available: true});
-        return res.status(200).json({
-            status: 'success',
-            data: products
+        const customLabels = {
+            docs: "products"
+        };
+        const options = {
+            page: req.query.page,
+            limit: req.query.perPage,
+            sort: { createdAt: -1 },
+            customLabels,
+            collation: {
+              locale: "en"
+            }
+        };
+        Product.paginate({available: true}, options, (err, products)=>{
+            res.status(200).json({
+                status: 'success',
+                data: {...products}
+            })
         })
     } catch (error) {
         return next(error);
