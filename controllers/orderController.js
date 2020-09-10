@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 exports.create = async(req, res, next) => {
     try {
         let { amount, products} = req.body;
-        let customer_data = _.pick(req.body, ['firstname', 'lastname', 'email', 'phone', 'address']);
+        let customer_data = _.pick(req.body, ['name', 'email', 'phone', 'address']);
         let customer = await Customer.findOne({email: customer_data.email});
         if(!customer) customer = await Customer.create(customer_data);
         let orderData = {
