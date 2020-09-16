@@ -43,7 +43,8 @@ exports.findAll = async(req, res, next) => {
             customLabels,
             collation: {
               locale: "en"
-            }
+            },
+            populate: 'category'
         };
         Product.paginate({}, options, (err, products)=>{
             res.status(200).json({
@@ -68,7 +69,8 @@ exports.findAvailable = async(req, res, next) => {
             customLabels,
             collation: {
               locale: "en"
-            }
+            },
+            populate: 'category'
         };
         Product.paginate({published: true}, options, (err, products)=>{
             res.status(200).json({
@@ -109,7 +111,7 @@ exports.findByCategory = async(req, res, next) => {
 
 exports.fetch = async(req, res, next) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate('category');
         if(!product) return next(new AppError('Product not found', 404));
         res.status(200).json({
             status: 'success',
