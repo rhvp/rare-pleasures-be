@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Category = require('../models/category');
 const AppError = require('../config/appError');
 const jwt = require('jsonwebtoken');
 const _ = require('underscore');
@@ -70,6 +71,32 @@ exports.findAvailable = async(req, res, next) => {
             }
         };
         Product.paginate({published: true}, options, (err, products)=>{
+            res.status(200).json({
+                status: 'success',
+                data: {...products}
+            })
+        })
+    } catch (error) {
+        return next(error);
+    }
+}
+
+exports.findByCategory = async(req, res, next) => {
+    try {
+        const customLabels = {
+            docs: "products"
+        };
+        const options = {
+            page: req.query.page,
+            limit: req.query.perPage,
+            sort: { createdAt: -1 },
+            customLabels,
+            collation: {
+              locale: "en"
+            },
+            populate: 'category'
+        };
+        Product.paginate({published: true, category: req.params.id}, options, (err, products)=>{
             res.status(200).json({
                 status: 'success',
                 data: {...products}

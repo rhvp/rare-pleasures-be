@@ -8,6 +8,8 @@ router.route('/')
 
 router.get('/customer-orders/:id', order.getAllCustomerOrders)
 
-router.get('/:id', order.fetchOrder)
+router.route('/:id')
+    .get(order.fetchOrder)
+    .patch(order.updateStatus)
 
 module.exports = router;
