@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Token = require('../models/token');
+const Customer = require('../models/customer');
 const AppError = require('../config/appError');
 const jwt = require('jsonwebtoken');
 const _ = require('underscore');
@@ -50,6 +51,18 @@ exports.login = async(req, res, next) => {
             status: 'success',
             data: user,
             token: token
+        })
+    } catch (error) {
+        return next(error);
+    }
+}
+
+exports.getCustomers = async(req, res, next) => {
+    try {
+        const customers = await Customer.find();
+        res.status(200).json({
+            status: 'success',
+            data: customers
         })
     } catch (error) {
         return next(error);

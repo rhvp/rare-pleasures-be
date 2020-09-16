@@ -11,6 +11,7 @@ const app = express();
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 app.use(cors());
 app.options('*', cors());
@@ -36,6 +37,7 @@ app.get('/', (req, res, next)=>{
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/categories', categoryRoutes);
 
 
 app.use((req, res, next)=>{
